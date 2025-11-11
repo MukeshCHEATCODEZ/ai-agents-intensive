@@ -1,10 +1,6 @@
 # ai-agents-intensive
 
 
-That’s awesome, Mukesh 👏 — having a GitHub repo for your **5-Day AI Agents Intensive** journey is a great move!
-Here’s a **perfect README.md** you can add — clean, professional, and tailored for your Kaggle + Google course work 👇
-
----
 
 # 🧠 5-Day AI Agents Intensive — Learning Journey
 
