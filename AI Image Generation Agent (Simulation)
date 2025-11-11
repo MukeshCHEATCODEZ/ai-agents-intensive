@@ -1,0 +1,85 @@
+from PIL import Image, ImageDraw, ImageFont
+from IPython.display import display
+import random, math
+
+# Step 1: Simulated MCP servers
+MCP_SERVERS = [
+    {"name": "imagegen-default", "quality": "standard", "speed": "fast"},
+    {"name": "imagegen-pro", "quality": "high", "speed": "medium"},
+    {"name": "imagegen-artistic", "quality": "stylized", "speed": "slow"},
+]
+
+# Step 2: Agent with artistic generation
+class ImageAgent:
+    def __init__(self, server_choice="imagegen-default"):
+        self.server = next((s for s in MCP_SERVERS if s["name"] == server_choice), MCP_SERVERS[0])
+        print(f"✅ Connected to: {self.server['name']} (Quality: {self.server['quality']}, Speed: {self.server['speed']})")
+
+    def generate_image(self, prompt, count=1):
+        print(f"\n📥 Request: {count} image(s) for prompt → '{prompt}'")
+
+        if count == 1:
+            print("✅ Auto-approving single image request.")
+            self._generate(prompt, count)
+        else:
+            print("⚠️ Bulk request detected! Approval needed.")
+            approval = input("Type 'approve' to continue or press Enter to cancel: ").strip().lower()
+            if approval == "approve":
+                self._generate(prompt, count)
+            else:
+                print("❌ Request cancelled by user.")
+
+    def _generate(self, prompt, count):
+        for i in range(count):
+            seed = random.randint(0, 9999)
+            random.seed(seed)
+            img = self.create_artistic_image(prompt, seed)
+            display(img)
+            img.save(f"generated_{i+1}.png")
+            print(f"🖼️ Saved image generated_{i+1}.png")
+
+    def create_artistic_image(self, prompt, seed):
+        random.seed(seed)
+        w, h = 512, 512
+        img = Image.new("RGB", (w, h))
+        draw = ImageDraw.Draw(img)
+
+        # Gradient background
+        for y in range(h):
+            r = int(120 + 60 * math.sin(y / 30))
+            g = int(100 + 80 * math.sin(y / 40))
+            b = int(150 + 50 * math.sin(y / 20))
+            draw.line([(0, y), (w, y)], fill=(r, g, b))
+
+        # Random circles
+        for _ in range(25):
+            x, y = random.randint(0, w), random.randint(0, h)
+            size = random.randint(20, 100)
+            color = (random.randint(100, 255), random.randint(100, 255), random.randint(100, 255), 180)
+            draw.ellipse((x, y, x+size, y+size), fill=color, outline=None)
+
+        # Add prompt text
+        try:
+            font = ImageFont.truetype("DejaVuSans.ttf", 18)
+        except:
+            font = ImageFont.load_default()
+        draw.text((20, 20), f"{self.server['name']}\n{prompt}", fill="white", font=font)
+        return img
+
+# Step 3: Choose server
+print("Available MCP Servers:")
+for s in MCP_SERVERS:
+    print(f"- {s['name']} (Quality: {s['quality']}, Speed: {s['speed']})")
+
+choice = input("Enter server name to connect (press Enter for default): ").strip()
+if choice == "":
+    choice = "imagegen-default"
+
+# Step 4: Create agent and generate images
+agent = ImageAgent(server_choice=choice)
+
+# Auto-approved single image
+agent.generate_image("A cute robot learning to code", count=1)
+
+# Bulk image request (ask for approval)
+agent.generate_image("A futuristic city skyline at night", count=3)
