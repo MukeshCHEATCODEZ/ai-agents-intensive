@@ -59,10 +59,8 @@ This repo documents my hands-on learning, projects, and experiments while buildi
 
 ## 📬 Connect with Me
 
-* 🌐 [LinkedIn](https://linkedin.com/in/) *(add your link)*
+* 🌐 [LinkedIn]([https://linkedin.com/in/](https://www.linkedin.com/in/m-mukesh?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)) 
 * 🧑‍💻 [Kaggle Profile](https://www.kaggle.com/mukeshmkm)
-* 📂 [GitHub Projects](https://github.com/mukeshmkm)
 
----
 
-Would you like me to make this **more technical (for recruiters/developers)** or **more storytelling (for general viewers on GitHub)**?
+
